@@ -16,7 +16,8 @@ app.use(cors({
     origin: [
         'http://localhost:3000', 
         'http://localhost:5173', 
-        'http://localhost:5174'
+        'http://localhost:5174',
+        'https://golesdeinstituto.vercel.app'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization','x-api-key'],
