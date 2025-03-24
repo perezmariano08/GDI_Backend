@@ -52,6 +52,7 @@ const getPartido = async (id) => {
             f.fase AS fase,
             t.nombre AS torneo,
             c.temporada,
+            p.link,
             e.nombre AS nombre_equipo,
             e.escudo AS escudo_equipo,
             p.jornada,
@@ -70,7 +71,7 @@ const getPartido = async (id) => {
 
 const getAlineacionesPartido = async (id) => {
     const partido = await db.query(`
-    SELECT 
+        SELECT 
         a.id_partido,
         a.id_equipo,
         a.dorsal,
@@ -78,11 +79,14 @@ const getAlineacionesPartido = async (id) => {
         a.condicion,
         j.posicion,
         j.nacionalidad,
-        COALESCE(CONCAT(j.apellido, ', ', j.nombre), a.jugador) AS nombre_completo
+        -- Si existe id_jugador, se usan los datos de jugadores, si no, se divide lo que hay en 'jugador'
+        COALESCE(j.apellido, SUBSTRING_INDEX(a.jugador, ', ', 1)) AS apellido,
+        COALESCE(j.nombre, SUBSTRING_INDEX(a.jugador, ', ', -1)) AS nombre
     FROM alineaciones a
     LEFT JOIN jugadores j ON j.id_jugador = a.id_jugador
     WHERE a.id_partido = ?
-    ORDER BY a.id_equipo, a.dorsal`, [id]);
+    ORDER BY a.id_equipo, a.dorsal;
+    `, [id]);
     return partido.length > 0 ? partido[0] : null;
 };
 
