@@ -34,7 +34,22 @@ const getCampañasJugadores = async (req, res) => {
     }
 };
 
+const getJugadorEstadisticas = async (req, res) => {
+    const { id } = req.params;  // Extraemos el parámetro 'id' de la URL    
+    try {
+        const jugador = await jugadoresService.getJugadorEstadisticas(id);
+        if (jugador) {
+            return res.status(200).json(jugador);
+        } else {
+            return res.status(404).json({ message: 'Jugador no encontrado' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener las estadisticas del jugador', error });
+    }
+};
+
 module.exports = {
     getJugadores,
+    getJugadorEstadisticas,
     getCampañasJugadores
 };

@@ -9,7 +9,14 @@ const getJugador = async (id) => {
     const [jugador] = await db.query(`
         SELECT
             id_jugador,
-            CONCAT(apellido, ' ', nombre) AS nombre_completo
+            nombre,
+            apellido,
+            posicion,
+            fecha_nacimiento,
+            ciudad,
+            provincia,
+            nacionalidad,
+            src
         FROM 
             jugadores
         WHERE 
@@ -38,8 +45,17 @@ ORDER BY
     return jugador.length > 0 ? jugador[0] : null;
 };
 
+const getJugadorEstadisticas = async (id) => {
+    const [jugador] = await db.query
+    (
+        `CALL sp_obtener_estadisticas_jugador(?)`, [id]
+    );
+    return jugador.length > 0 ? jugador[0] : null;
+};
+
 module.exports = {
     getJugadores,
     getJugador,
+    getJugadorEstadisticas,
     getCampañasJugador
 };

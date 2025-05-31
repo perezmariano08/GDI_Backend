@@ -34,6 +34,20 @@ const getAlineacionesPartido = async (req, res) => {
     }
 };
 
+const getPartidosAñoMesController = async (req, res) => {
+    const { temporada, mes } = req.query;  // Extraemos el parámetro 'id' de la URL   
+    try {
+        const partidos = await partidosService.getPartidosAñoMes(temporada, mes);
+        if (partidos) {
+            return res.status(200).json(partidos);
+        } else {
+            return res.status(404).json({ message: 'Partidos no encontrados' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener los partidos', error });
+    }
+};
+
 const getCambiosPartido = async (req, res) => {
     const { id } = req.params;  // Extraemos el parámetro 'id' de la URL    
     try {
@@ -76,6 +90,50 @@ const getGolesPartido = async (req, res) => {
     }
 };
 
+const getImagenesPartido = async (req, res) => {
+    const { id } = req.params;  // Extraemos el parámetro 'id' de la URL    
+    try {
+        const partido = await partidosService.getImagenesPartido(id);
+        if (partido) {
+            return res.status(200).json(partido);
+        } else {
+            return res.status(404).json({ message: 'Imagenes no encontradas' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener las imagenes', error });
+    }
+};
+
+
+const getPartidosCampañaPartido = async (req, res) => {
+    const { id } = req.params;  // Extraemos el parámetro 'id' de la URL    
+    try {
+        const partido = await partidosService.getPartidosCampañaPartido(id);
+        if (partido) {
+            return res.status(200).json(partido);
+        } else {
+            return res.status(404).json({ message: 'Imagenes no encontradas' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener las imagenes', error });
+    }
+};
+
+
+const getPartidosRival = async (req, res) => {
+    const { id } = req.params;  // Extraemos el parámetro 'id' de la URL    
+    try {
+        const partido = await partidosService.getPartidosRival(id);
+        if (partido) {
+            return res.status(200).json(partido);
+        } else {
+            return res.status(404).json({ message: 'Partidos no encontrados' });
+        }
+    } catch (error) {
+        return res.status(500).json({ message: 'Error al obtener los partidos', error });
+    }
+};
+
 
 
 module.exports = {
@@ -83,5 +141,10 @@ module.exports = {
     getAlineacionesPartido,
     getGolesPartido,
     getIncidenciasPartido,
-    getCambiosPartido
+    getCambiosPartido,
+    getImagenesPartido,
+    getPartidosCampañaPartido,
+    getPartidosRival,
+    getPartidosAñoMesController // 👈 FALTABA ESTE
+
 };
